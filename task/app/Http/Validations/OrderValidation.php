@@ -81,6 +81,13 @@ class OrderValidation
         if ($response->fails()) {
             return ['error' => $response->errors()->first() , 'code' => Response::HTTP_UNPROCESSABLE_ENTITY];
         }
+        $lat1 = (float)array_get($inputs,'origin.0','');
+        $long1 = (float)array_get($inputs,'origin.1','');
+        $lat2 = (float)array_get($inputs,'destination.0','');
+        $long2 = (float)array_get($inputs,'destination.1','');
+        if(empty($lat1) || empty($long1) || empty($lat2) || empty($long2)){
+            return ["error" => "ALL_LATITUDE_AND_LONGITUDE_NOT_FOUND.","code" => Response::HTTP_NOT_FOUND];
+        }
         return [];
     }
 

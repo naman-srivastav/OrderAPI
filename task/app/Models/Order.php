@@ -27,7 +27,7 @@ class Order extends Model
      * @param array $destination
      * @return array
      */
-    public static function getDistance($origin , $destination){
+    public function getDistance($origin , $destination){
         if(empty(config('config.DISTANCE_MATRIX_URL'))){
             return ["error" => "GOOGLE_MAP_URL_NOT_FOUND."];
         }
@@ -38,9 +38,6 @@ class Order extends Model
         $long1 = (float)array_get($origin,'1','');
         $lat2 = (float)array_get($destination,'0','');
         $long2 = (float)array_get($destination,'1','');
-        if(empty($lat1) || empty($long1) || empty($lat2) || empty($long2)){
-            return ["error" => "ALL_LATITUDE_AND_LONGITUDE_NOT_FOUND."];
-        }
         $url = config('config.DISTANCE_MATRIX_URL')."&origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&key=".config('config.GOOGLE_MAP_KEY');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
