@@ -28,7 +28,7 @@ echo " -- Seeding initiated -- "
 docker exec $PROJECT_NAME php artisan db:seed
 
 echo "-- Initiatated all test cases --"
-docker exec $PROJECT_NAME ./vendor/bin/phpunit ./tests/Unit
 docker exec $PROJECT_NAME ./vendor/bin/phpunit ./tests/Integration
+docker exec $PROJECT_NAME ./vendor/bin/phpunit ./tests/Unit
 echo "-- All test cases done --"
 
