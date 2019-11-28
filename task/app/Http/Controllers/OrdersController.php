@@ -11,9 +11,13 @@ use App\Http\Validations\OrderValidation;
 class OrdersController extends Controller
 {
     protected $orderRepository;
-    public function __construct(OrderRepository $orderRepository)
+    
+    private $order_model;
+    
+    public function __construct(OrderRepository $orderRepository, Order $order_model)
     {
         $this->orderRepository = $orderRepository;
+        $this->order_model = $order_model;
     }
     
     /**
@@ -117,8 +121,7 @@ class OrdersController extends Controller
             if(!empty(array_get($validation_response,'error',''))){
                  return response()->json(['error' => $validation_response['error']],array_get($validation_response,'code',Response::HTTP_INTERNAL_SERVER_ERROR));
             }
-
-            $data = Order::getDistance($request->get('origin'),$request->get('destination'));
+            $data = $this->order_model->getDistance($request->get('origin'),$request->get('destination'));
             if(!empty(array_get($data,'error',''))){
                 return response()->json(['error' => $data['error']] , Response::HTTP_NOT_FOUND);
             }

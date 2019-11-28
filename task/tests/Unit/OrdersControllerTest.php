@@ -25,7 +25,7 @@ class OrdersControllerTest extends TestCase
         $this->orderMock = \Mockery::mock(Order::class);
         $this->orderControllerMock = $this->app->instance(
             OrdersController::class,
-            new OrdersController($this->orderRepositoryMock)
+            new OrdersController($this->orderRepositoryMock, $this->orderMock)
         );
     }
     
@@ -89,7 +89,6 @@ class OrdersControllerTest extends TestCase
                 'destination' => ["28.7041", "77.1025"], //Delhi
             ];
         $param = $this->getRequestData($param);
-
         $this->app->instance('Order', $this->orderRepositoryMock);
         $response = $this->orderControllerMock->create($param);
         $data = json_decode($response->getContent(), true);
@@ -400,7 +399,7 @@ class OrdersControllerTest extends TestCase
         $destination_lat = (float)array_get($params,'destination.0','');
         $destination_long = (float)array_get($params,'destination.1','');
         $distance = $this->_getDistanceWithoutApi($origint_lat, $origin_long, $destination_lat, $destination_long);
-        $this->app->instance('Order', $this->orderMock);
+        
         $this->orderMock
             ->shouldReceive('getDistance')
             ->withAnyArgs()
