@@ -1,0 +1,6 @@
+/public/code-coverage
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+/nbproject

@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+  myorders-app:
+    build: 
+      context: './../docker-assets/php/'
+      args:
+        UID: 1000
+        WEB_USER: dev-user
+        WEB_GROUP: www-data
+    container_name: orders_php
+    environment:
+      - APACHE_RUN_USER=#1000
+      - APACHE_RUN_GROUP=#1000
+    volumes:
+      - ./../task:/var/www/html/
+    ports:
+      - 8080:80
+    networks:
+      - app-network
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3307:3306"
+    dns_search: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    container_name: ${DB_HOST}
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local

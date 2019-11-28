@@ -1,0 +1,170 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Order's API",
+        "description": "Order's API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/orders?page=:page&limit=:limit": {
+            "get": {
+                "tags": [
+                    "Order's List"
+                ],
+                "summary": "Return list of orders.",
+                "description": "Having a list of orders along with there id, status and disatnce",
+                "operationId": "orderListing",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Valid page and must start with 1",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Valid limit of order",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "BAD_REQUEST"
+                    },
+                    "422": {
+                        "description": "INVALID_PARAMETERS"
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "post": {
+                "tags": [
+                    "Create Order"
+                ],
+                "summary": "Create new order",
+                "description": "Create a new order with a valid origin and destination latitude and longitude",
+                "operationId": "createOrder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "origin": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "destination": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "origin": [
+                                        "28.4595",
+                                        "77.0266"
+                                    ],
+                                    "destination": [
+                                        "28.7041",
+                                        "77.1025"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Invalid Parameters"
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "patch": {
+                "tags": [
+                    "Update Order"
+                ],
+                "summary": "Update order",
+                "description": "Update order status",
+                "operationId": "updateOrder",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Valid order id with UNASSIGNED status",
+                        "required": true,
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "status": "TAKEN"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order has been assigned successfully"
+                    },
+                    "400": {
+                        "description": "BAD_REQUEST"
+                    },
+                    "404": {
+                        "description": "ORDER_NOT_FOUND"
+                    },
+                    "405": {
+                        "description": "METHOD_NOT_ALLOWED"
+                    },
+                    "409": {
+                        "description": "ORDER_CONFLICT"
+                    },
+                    "422": {
+                        "description": "INVALID_PARAMETERS"
+                    }
+                }
+            }
+        }
+    }
+}
