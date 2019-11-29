@@ -94,7 +94,7 @@ class OrdersControllerTest extends TestCase
         $data = json_decode($response->getContent(), true);
         
         echo "\n -- Test for invalid latitude -- \n";
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertArrayHasKey('error', $data);
         $this->assertInternalType('array', $data);
         $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
@@ -114,7 +114,7 @@ class OrdersControllerTest extends TestCase
         $data = json_decode($response->getContent(), true);
         
         echo "\n -- Test for invalid longitude -- \n";
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertArrayHasKey('error', $data);
         $this->assertInternalType('array', $data);
         $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
@@ -157,6 +157,24 @@ class OrdersControllerTest extends TestCase
         $this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertArrayHasKey('error', $data);
         $this->assertInternalType('array', $data);
+        $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+    }
+    
+    public function testCreateOrderException()
+    {
+        echo "\n----Test for exception while placing new order. ---\n";
+        $param = [
+                'origin' => ["28.4595", "77.0266"], // Gurgaon
+                'destination' => ["28.7041", "77.1025"], //Delhi
+            ];
+        $param = $this->getRequestData($param);
+        $this->orderRepositoryMock
+            ->shouldReceive('create')
+            ->withAnyArgs()
+            ->andThrow(new \Exception());
+        $response = $this->orderControllerMock->create($param);
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
         $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
     }
     
@@ -286,6 +304,19 @@ class OrdersControllerTest extends TestCase
             [$unassigned_order, Response::HTTP_CONFLICT, 0,"concurrent requests to take a same order"],
         ];
     }
+    
+    public function testUpdateOrderException()
+    {
+        echo "\n----Test for exception while update. ---\n";
+        $param = ['status' => 'TAKEN'];
+        $param = $this->getRequestData($param);
+        $id = rand(1,100);
+        $this->orderRepositoryMock->shouldReceive('update')->with($id)->andThrow(new \Exception());
+        $response = $this->orderControllerMock->update($param, $id);
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
+        $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+    }
 
     //order list test cases
     
@@ -331,6 +362,23 @@ class OrdersControllerTest extends TestCase
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $this->response->status());
         $this->assertArrayHasKey('error', $data);
         $this->assertInternalType('array', $data);
+        $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+    }
+    
+    public function testOrderListWithException ()
+    {
+        $page = 1;
+        $limit = 3;
+        $params = ['page' => $page, 'limit' => $limit];
+        $params = $this->getRequestData($params);
+        $this->orderRepositoryMock
+            ->shouldReceive('index')
+            ->with($page, $limit)
+            ->andThrow(new \Exception());
+        $response = $this->orderControllerMock->index($params);
+        $data = json_decode($response->getContent(), true);
+        echo "\n -- Test for getting list with valid parameters  -- \n";
+        $this->assertArrayHasKey('error', $data);
         $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
     }
     
