@@ -105,9 +105,6 @@ class OrderTest extends TestCase
         echo "\n -- Test for getting list with invalid values -- \n";
         $this->_orderCheck([], Response::HTTP_UNPROCESSABLE_ENTITY,NULL,'page=NOTHING&limit=5');
         
-        echo "\n -- Test for getting list with invalid page -- \n";
-        $this->_orderCheck([], Response::HTTP_UNPROCESSABLE_ENTITY,NULL,'page=20&limit=5');
-        
         echo "\n -- Test for getting list with negative values -- \n";
         $this->_orderCheck([], Response::HTTP_UNPROCESSABLE_ENTITY,NULL,'page=-1&limit=-5');
         
