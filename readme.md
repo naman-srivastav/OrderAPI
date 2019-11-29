@@ -136,8 +136,8 @@ docker exec orders_php ./vendor/bin/phpunit ./tests/Integration
         Code                    Description
         - 200                   successful operation
         - 400                   Bad Request
+        - 404                   Not Found
         - 422                   Request Body Validation Error
-        - 405                   Method Not Allowed
         - 500                   Internal Server Error    
 
 
@@ -176,10 +176,9 @@ docker exec orders_php ./vendor/bin/phpunit ./tests/Integration
         Code                    Description
         - 200                   successful operation
         - 400                   Bad Request
-        - 405                   Method Not Allowed
-        - 422                   Validation Error
-        - 406                   Invalid ID
+        - 404                   Order Not Found
         - 409                   Order Already Taken
+        - 422                   Validation Error
         - 500                   Internal Server Error    
 
 

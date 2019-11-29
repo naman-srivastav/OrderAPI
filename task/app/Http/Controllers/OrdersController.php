@@ -62,7 +62,8 @@ class OrdersController extends Controller
      * @OA\Schema(ref="#/components/schemas/Order")
      *   ),
      * @OA\Response(response=400,                      description="BAD_REQUEST"),
-     * @OA\Response(response=422,                      description="INVALID_PARAMETERS")
+     * @OA\Response(response=422,                      description="INVALID_PARAMETERS"),
+     * @OA\Response(response=500,                      description="INTERNAL_SERVER_ERROR")
      *
      * )
      */
@@ -115,7 +116,8 @@ class OrdersController extends Controller
      *   ),
      * @OA\Response(response=400,                   description="Bad Request"),
      * @OA\Response(response=404,                   description="Not Found"),
-     * @OA\Response(response=422,                   description="Invalid Parameters")
+     * @OA\Response(response=422,                   description="Invalid Parameters"),
+     * @OA\Response(response=500,                   description="INTERNAL_SERVER_ERROR")
      *
      * )
      */
@@ -181,7 +183,8 @@ class OrdersController extends Controller
      * @OA\Response(response=400,                   description="BAD_REQUEST"),
      * @OA\Response(response=404,                   description="ORDER_NOT_FOUND"),
      * @OA\Response(response=409,                   description="ORDER_ALREADY_TAKEN"),
-     * @OA\Response(response=422,                   description="INVALID_PARAMETERS")
+     * @OA\Response(response=422,                   description="INVALID_PARAMETERS"),
+     * @OA\Response(response=500,                   description="INTERNAL_SERVER_ERROR")
      *
      * )
      */
