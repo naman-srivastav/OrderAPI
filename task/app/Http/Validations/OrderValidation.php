@@ -64,10 +64,6 @@ class OrderValidation
             return ['error' => $validator->errors()->first() ,
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY];
         }
-        if ($request->get('page') != 1) {
-            return ['error' => "PAGE_NUMBER_MUST_START_WITH_1",
-                'code'=>Response::HTTP_UNPROCESSABLE_ENTITY];
-        }
         return [];
     }
 
@@ -93,11 +89,11 @@ class OrderValidation
             return ['error' => $response->errors()->first() ,
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY];
         }
-        $lat1 = (float)array_get($inputs, 'origin.0', '');
-        $long1 = (float)array_get($inputs, 'origin.1', '');
-        $lat2 = (float)array_get($inputs, 'destination.0', '');
-        $long2 = (float)array_get($inputs, 'destination.1', '');
-        if (empty($lat1) || empty($long1) || empty($lat2) || empty($long2)) {
+        $lat1 = array_get($inputs, 'origin.0', '');
+        $long1 = array_get($inputs, 'origin.1', '');
+        $lat2 = array_get($inputs, 'destination.0', '');
+        $long2 = array_get($inputs, 'destination.1', '');
+        if (!is_numeric($lat1) ||  !is_numeric($long1) ||  !is_numeric($lat2) ||  !is_numeric($long2)) {
             return ["error" => "ALL_LATITUDE_AND_LONGITUDE_ARE_NOT_VALID.",
                 "code" => Response::HTTP_UNPROCESSABLE_ENTITY];
         }
