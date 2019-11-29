@@ -86,7 +86,7 @@ class OrderValidation
         $lat2 = (float)array_get($inputs,'destination.0','');
         $long2 = (float)array_get($inputs,'destination.1','');
         if(empty($lat1) || empty($long1) || empty($lat2) || empty($long2)){
-            return ["error" => "ALL_LATITUDE_AND_LONGITUDE_NOT_FOUND.","code" => Response::HTTP_NOT_FOUND];
+            return ["error" => "ALL_LATITUDE_AND_LONGITUDE_ARE_NOT_VALID.","code" => Response::HTTP_UNPROCESSABLE_ENTITY];
         }
         return [];
     }
