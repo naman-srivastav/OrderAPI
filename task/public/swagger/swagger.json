@@ -154,11 +154,8 @@
                     "404": {
                         "description": "ORDER_NOT_FOUND"
                     },
-                    "405": {
-                        "description": "METHOD_NOT_ALLOWED"
-                    },
                     "409": {
-                        "description": "ORDER_CONFLICT"
+                        "description": "ORDER_ALREADY_TAKEN"
                     },
                     "422": {
                         "description": "INVALID_PARAMETERS"
